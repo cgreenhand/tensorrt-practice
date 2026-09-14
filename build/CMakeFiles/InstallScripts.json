@@ -1,8 +1,0 @@
-{
-	"InstallScripts" : 
-	[
-		"/home/gw/workspace/UP/tensorrt_learning/tensorrt-practice/build/cmake_install.cmake",
-		"/home/gw/workspace/UP/tensorrt_learning/tensorrt-practice/build/02-mnist-onnx/cmake_install.cmake"
-	],
-	"Parallel" : false
-}
