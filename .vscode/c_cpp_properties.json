@@ -1,0 +1,35 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/home/gw/TensorRT-8.6.1.6/include",
+                "/usr/local/cuda/include",
+                "/usr/local/include/opencv4"
+            ],
+            "defines": [
+                "__CUDACC__",
+                "__CUDA_ARCH__=860"
+            ],
+            "compilerPath": "/usr/bin/g++",
+            "compilerArgs": [
+                "-std=c++17"
+            ],
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "linux-gcc-x64",
+            "configurationProvider": "ms-vscode.cmake-tools",
+            "browse": {
+                "path": [
+                    "${workspaceFolder}",
+                    "/home/gw/TensorRT-8.6.1.6/include",
+                    "/usr/local/cuda/include",
+                    "/usr/local/include/opencv4"
+                ],
+                "limitSymbolsToIncludedHeaders": false
+            }
+        }
+    ],
+    "version": 4
+}

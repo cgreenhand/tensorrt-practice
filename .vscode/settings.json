@@ -1,0 +1,25 @@
+{
+    "files.associations": {
+        "*.c++": "cpp",
+        "*.cu": "cuda-cpp",
+        "*.cuh": "cuda-cpp",
+        "*.h": "cpp",
+        "*.hpp": "cpp",
+        "NvInfer*.h": "cpp"
+    },
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+    "C_Cpp.default.cppStandard": "c++17",
+    "C_Cpp.default.intelliSenseMode": "linux-gcc-x64",
+    "cmake.sourceDirectory": "${workspaceFolder}/CMakeLists.txt",
+    "cmake.buildDirectory": "${workspaceFolder}/build",
+    "cmake.configureArgs": [
+        "-DTENSORRT_ROOT=/home/gw/TensorRT-8.6.1.6",
+        "-DCMAKE_CUDA_ARCHITECTURES=86",
+        "-DTRT_LEARNING_PROJECT=tensorrt-8.6/01-mnist-wts"
+    ],
+    "cmake.exportCompileCommandsFile": true,
+    "terminal.integrated.env.linux": {
+        "LD_LIBRARY_PATH": "/home/gw/TensorRT-8.6.1.6/lib:/usr/local/cuda/lib64:${env:LD_LIBRARY_PATH}",
+        "PATH": "/usr/local/cuda/bin:${env:PATH}"
+    }
+}
