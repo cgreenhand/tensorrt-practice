@@ -1,2 +1,6 @@
 build/
 artifacts/
+*.pt
+*.onnx
+*.engine
+*.plan
