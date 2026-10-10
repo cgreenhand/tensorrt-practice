@@ -3,6 +3,7 @@
         {
             "name": "Linux",
             "includePath": [
+                "${workspaceFolder}/tensorrt-8.6/09-yolov8-det-wts-process/include",
                 "${workspaceFolder}/**",
                 "/home/gw/TensorRT-8.6.1.6/include",
                 "/usr/local/cuda/include",
@@ -22,6 +23,7 @@
             "configurationProvider": "ms-vscode.cmake-tools",
             "browse": {
                 "path": [
+                    "${workspaceFolder}/tensorrt-8.6/09-yolov8-det-wts-process/include",
                     "${workspaceFolder}",
                     "/home/gw/TensorRT-8.6.1.6/include",
                     "/usr/local/cuda/include",
