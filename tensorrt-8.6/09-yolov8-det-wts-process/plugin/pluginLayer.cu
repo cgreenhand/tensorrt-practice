@@ -83,6 +83,9 @@ __device__ int32_t reserveOutputSlot(int32_t* counter, int32_t maximum)
 }
 
 
+// DFL:  n,4,8400
+// class: n,80,8400 已经经过了sigmoid
+// stdies 80*80-8 40*40-16  20*20-32
 template <typename T>
 __global__ void decodeKernel(
     T const* distances,
@@ -92,6 +95,92 @@ __global__ void decodeKernel(
     DecodeParameters parameters
 )
 {
+    int32_t const globalIndex = static_cast<int32_t>(blockIdx.x*blockDim.x + threadIdx.x);
+    int32_t const total = parameters.batchSize*parameters.numPredictions;
+    if(globalIndex >= total) return ;
+
+    int32_t const batchIdex = globalIndex / parameters.numPredictions;
+    int32_t const predictionIndex = globalIndex % parameters.numPredictions;
+
+    float bestScore = 0.0F;
+    int32_t bestClassId = -1;
+    for(int32_t classIndex = 0; classIndex < parameters.numClasses; ++classIndex)
+    {
+        size_t const scoreOffset = (static_cast<size_t>(batchIndex)*parameters.numClasses + classIndex) * parameters.numPredictions + predictionIndex;
+        float const score = loadAsFloat(classProbabilities + scoreOffset);
+        if(score > bestScore)
+        {
+            bestScore = score;
+            bestClassId = classIndex;
+        }
+
+    }
+    if(bestScore < parameters.scoreThreshold){
+        return;
+    }
+
+    // p3 p4 p5
+    int32_t localIndex = predictionIndex;
+    int32_t stride = 0;
+    int32_t gridWidth = 0;
+    int32_t gridHeight = 0;
+    for(int32_t level = 0; level < parameters.strideCount; ++level)
+    {
+        int32_t const levelStride = parameters.strides[level];
+        int32_t const levelWidth = parameters.inputWidth / levelStride;
+        int32_t const levelHeight = parameters.inputHeight / levelStride;
+        int32_t const levelCount = levelWidth * levelHeight;
+
+        if(localIndex < levelCount)
+        {
+            stride = levelStride;
+            gridWidth = levelWidth;
+            gridHeight = levelHeight;
+            break;
+        }
+        localIndex -= levelCount;
+
+
+    }
+
+    if(stride ==0 || localIndex < 0 || localIndex >= gridWidth * gridHeight)
+    {
+        return ;
+    }
+
+    int32_t const gridX = localIndex % gridWidth;
+    int32_t const gridY = localIndex / gridWidth;
+    float const anchorX = static_cast<float>(gridX) + 0.5F;
+    float const anchorY = static_cast<float>(gridx) + 0.5F;
+
+    size_t const distanceBase = static_cast<size_t>(batchIndex)*4U * parameters.numPredictions + predictionIndex;
+    float const left = loadAsFloat(distances + distanceBase +0U * parameters.numPredictions);
+    float const top = loadAsFloat(distances + distanceBase +1U * parameters.numPredictions);
+    float const right = loadAsFloat(distances + distanceBase +2U * parameters.numPredictions);
+    float const bottom = loadAsFloat(distances + distanceBase +3U * parameters.numPredictions);
+    
+    float x1 = (anchorX - left) * static_cast<float>(stride);
+    float y1 = (anchorY - top) * static_cast<float>(stride);
+    float x2 = (anchorX + right) * static_cast<float>(stride);
+    float y2 = (anchorY + bottom) * static_cast<float>(stride);
+
+    x1 = fminf(fmaxf(x1,0.0F), static_cast<float>(parameters.inputWidth));
+    y1 = fminf(fmaxf(y1,0.0F), static_cast<float>(parameters.inputHeight));
+    x2 = fminf(fmaxf(x2,0.0F), static_cast<float>(parameters.inputWidth));
+    y2 = fminf(fmaxf(y2,0.0F), static_cast<float>(parameters.inputHeight));
+
+    if(x1 > x2 || y1 > y2) return;
+
+    int32_t const outputIndex = reserveOutputSlot(detectionCounts + batchIndex, parameters.maxOutputBoxes);
+    if(outputIndex == -1) return;
+
+    size_t const outputOffset = (static_cast<size_t>(batchIndex) * parameters.maxOutputBoxes + outputIndex) * kDetectionWidth;
+    detections[outputOffset + 0U] = x1; 
+    detections[outputOffset + 1U] = y1;
+    detections[outputOffset + 2U] = x2;
+    detections[outputOffset + 3U] = y2;
+    detections[outputOffset + 4U] = bestScore;
+    detections[outputOffset + 5U] = static_cast<float>(bestClassId);
 
 }
 
