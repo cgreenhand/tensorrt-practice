@@ -86,6 +86,14 @@ __device__ int32_t reserveOutputSlot(int32_t* counter, int32_t maximum)
 // DFL:  n,4,8400
 // class: n,80,8400 已经经过了sigmoid
 // stdies 80*80-8 40*40-16  20*20-32
+/*
+@distances, :DFL:  batch,4,8400
+@classProbabilities, : class: batch,80,8400 已经经过了sigmoid
+@detections, : batch,8400,6
+@detectionCounts, : batch,n
+@parameters
+*/
+
 template <typename T>
 __global__ void decodeKernel(
     T const* distances,
