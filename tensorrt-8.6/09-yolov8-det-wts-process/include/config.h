@@ -50,7 +50,7 @@ inline constexpr char kOutputTensorName[] =
 
 inline constexpr int32_t kNumClasses = 80;
 
-inline constexpr int32_t kBatchSize = 1;
+inline constexpr int32_t kBatchSize = 32;
 
 inline constexpr int32_t kInputChannels = 3;
 inline constexpr int32_t kInputHeight = 640;

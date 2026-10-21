@@ -107,7 +107,7 @@ __global__ void decodeKernel(
     int32_t const total = parameters.batchSize*parameters.numPredictions;
     if(globalIndex >= total) return ;
 
-    int32_t const batchIdex = globalIndex / parameters.numPredictions;
+    int32_t const batchIndex = globalIndex / parameters.numPredictions;
     int32_t const predictionIndex = globalIndex % parameters.numPredictions;
 
     float bestScore = 0.0F;
@@ -159,7 +159,7 @@ __global__ void decodeKernel(
     int32_t const gridX = localIndex % gridWidth;
     int32_t const gridY = localIndex / gridWidth;
     float const anchorX = static_cast<float>(gridX) + 0.5F;
-    float const anchorY = static_cast<float>(gridx) + 0.5F;
+    float const anchorY = static_cast<float>(gridY) + 0.5F;
 
     size_t const distanceBase = static_cast<size_t>(batchIndex)*4U * parameters.numPredictions + predictionIndex;
     float const left = loadAsFloat(distances + distanceBase +0U * parameters.numPredictions);

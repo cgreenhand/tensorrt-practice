@@ -3,6 +3,10 @@
 #include "config.h"
 
 
+namespace yolov8
+{
+
+
 static_assert(sizeof(Detection) == 6 * sizeof(float));
 
 static int32_t kCandidateCount = (yolov8::det::kInputHeight / 8 ) 
@@ -18,7 +22,7 @@ struct PostprocessConfig
     // At 640x640: 80*80 + 40*40 + 20*20 = 8400.
     int32_t candidateCount{kCandidateCount};
 
-    int32_t preNmsTopK{yolov8::det::kNmsThreshold};
+    int32_t preNmsTopK{yolov8::det::kMaxOutputBoxes};
     int32_t maxDetections{yolov8::det::kMaxOutputBoxes};
     float scoreThreshold{yolov8::det::kConfidenceThreshold};
     float nmsThreshold{yolov8::det::kNmsThreshold};
@@ -55,8 +59,12 @@ public:
         int32_t* outputCounts,
         cudaStream_t stream
     );
-    
 
+    int32_t batchSize() const noexcept;
+    int32_t candidateCount() const noexcept;
+    int32_t maxDetections() const noexcept;
+    std::size_t outputDetectionBytes() const noexcept;
+    std::size_t outputCountBytes() const noexcept;
 
 private:
     class Workspace;
@@ -68,3 +76,4 @@ private:
     Workspace* mWorkspace{};
 };
 
+}

@@ -1,0 +1,32 @@
+Results saved to: "/home/gw/Downloads/output"
+[Timer] Inference total: 17741.47 ms
+[Timer] End-to-end total: 17916.95 ms
+[Timer] Summary - Images: 5000 | Total: 17741.47 ms | Average: 3.55 ms/image
+
+
+[Timer] Batch 5000/5000 - Preprocess: 0.11 ms | Inference: 0.66 ms | Postprocess: 0.11 ms | Draw&Save: 1.43 ms
+Processed images: 5000
+Total detections: 19973
+Total time: 17060.80 ms
+Results saved to: "/home/gw/Downloads/output"
+[Timer] Inference total: 17060.80 ms
+[Timer] End-to-end total: 17224.92 ms
+[Timer] Summary - Images: 5000 | Total: 17060.80 ms | Average: 3.41 ms/image
+
+
+Processed images: 5000
+Total detections: 19975
+Total time: 14247.34 ms
+Results saved to: "/home/gw/Downloads/output"
+[Timer] Inference total: 14247.34 ms
+[Timer] End-to-end total: 14421.14 ms
+[Timer] Summary - Images: 5000 | Total: 14247.34 ms | Average: 2.85 ms/image
+
+[Timer] Batch 157/157 - Preprocess: 0.79 ms | Inference: 9.64 ms | Postprocess: 0.21 ms | Draw&Save: 9.09 ms
+Processed images: 5000
+Total detections: 19994
+Total time: 14114.22 ms
+Results saved to: "/home/gw/Downloads/output"
+[Timer] Inference total: 14114.22 ms
+[Timer] End-to-end total: 14281.71 ms
+[Timer] Summary - Images: 5000 | Total: 14114.22 ms | Average: 2.82 ms/image
